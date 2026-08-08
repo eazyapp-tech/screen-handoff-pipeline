@@ -447,6 +447,10 @@ The sheets are one product. A reader who learned one must be able to read them a
     measurement to prop it up, and pairing it with one that measures something else is worse than leaving it
     unmeasured.
 
+40. **A scripted find-and-replace pass is not a rewrite, and it needs its own read.** Thirty-six edits went in across two turns via find-and-replace, each individually correct, and greps afterwards came back clean. But a grep proves a banned word is absent; it cannot see that one idea has been given five different phrasings. Replacing "partition" in five places produced five wordings for one concept, on the very axis where a one-word-one-meaning rule had just been locked. **After any scripted pass, read the changed sentences side by side, not just the sweep output.** `grep -n` on the replacement phrase, all hits printed together, is enough to see it.
+
+41. **Sweep every deliverable in the folder, not the main artifact alone.** The banned-word sweep ran on the handoff sheet and passed; the cover notes sitting beside it still carried a banned word, because they were written before the rule and never re-checked. The reader receives the folder, not the file. Glob the folder at close-out.
+
 ## Learnings (accumulating — split into a separate file if this passes ~30 entries)
 
 - **Prior art check is the highest-ROI pre-flight step.** One screen had three existing hardened documents; the job collapsed from "derive everything" to "reconcile and reformat."
