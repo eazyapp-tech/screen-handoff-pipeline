@@ -236,7 +236,7 @@ One document per screen. Sections in this order, skipping any that don't apply:
 Number the sections end to end, and keep the design-only sections (empty-state copy, the design-fix list) separable — the cover note should be able to say "sections 1–11 and 14 are yours, skip 12 and 15" and have that be true.
 
 **Writing rules:**
-- Plain words. If a term only resolves for someone who shares your context, replace or gloss it.
+- Plain words. If a term only resolves for someone who shares your context, replace or gloss it. **The acceptance test, stated by the owner:** a developer or designer reads the sheet alone and builds from it without asking the PM. Check candidate words against the reader's own world, not just a jargon list: "partition" is clean English and still failed, because to a PG operator a partition is a plywood wall dividing a room.
 - Domain vocabulary the team already owns (tenant, due, booking, vacant) stays — don't over-simplify their own words.
 - Zero code references: no file paths, table names, column names, function names, line numbers. **Internal numeric codes count as code** — say "a bill cleared using the tenant's deposit," never the mode number behind it.
 - **And never tell the reader their code is wrong.** No "the existing calculation counts wrongly", no "do not reuse X", no code cited as evidence. Where something today produces a wrong result, write it as **an outcome plus a test**: not *"it counts anyone present at any point as present throughout"* but *"a tenant present three days contributes three days — test: a property that emptied on the 5th and refilled on the 25th reports about a third full"*. A code claim goes stale the day someone edits; an outcome stays true for the life of the screen, is testable by QA, and costs nothing if the code already does it. **"Not built yet" stays** — that is scope, not critique.
@@ -433,6 +433,19 @@ The sheets are one product. A reader who learned one must be able to read them a
     not share code with it. Say what the prior sheet said about itself before recounting it.
 
 39. **A grammar that locks headers but not cells regrows jargon one layer down.** Section names and column headers were locked; the words inside grid cells were not, and "Follows", "pinned window" and a third kind label all appeared on one sheet, each individually reasonable, jointly a private dialect — on the very axis where the rule "never a new coinage" already existed. Recall does not hold a vocabulary; a closed phrase list plus a grep at close-out does. When locking any format, ask what the next unlocked layer inside it is, because that is where the drift moves.
+
+45. **A proxy for "nobody has touched this yet" is validated against one population, and silently invalid on
+    the next.** On one screen, filtering records to "sign-in still off" cleanly isolated untouched rows,
+    because the person was brand new and nobody had set anything up. The sibling screen reused the same
+    filter for records belonging to people who *already existed* and were already active elsewhere, where it
+    means almost nothing: the person is live at other properties, and the screen itself opens the editor
+    immediately after creating the record, so most rows are edited within seconds. The query ran, returned
+    plausible numbers, and those numbers appeared to contradict a correct code-level finding. **Before
+    reusing a freshness proxy on a new population, state what it is standing in for and check that still
+    holds** — and where it doesn't, say the measurement cannot be made rather than reporting the muddy
+    number. A write-time claim verified from code is legitimate on its own; it does not need a steady-state
+    measurement to prop it up, and pairing it with one that measures something else is worse than leaving it
+    unmeasured.
 
 ## Learnings (accumulating — split into a separate file if this passes ~30 entries)
 
