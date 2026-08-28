@@ -260,6 +260,7 @@ The sheets are one product. A reader who learned one must be able to read them a
 - **Same fixed phrases.** "Test it:", "View all", "as of today", "from today onwards", "hides at zero", "Couldn't load this", the Restricted copy. Word for word.
 - **Tables wherever content is parallel**; prose only for argument. Layer rows lead with the dash marker inside a cell, as Inventory's View all does.
 - **Plain punctuation.** No em dashes in prose (the dash survives as empty-cell placeholder, layer marker, and in titles). No AI-tell vocabulary, and none of the banned-jargon list (polarity, denominator, cohort, reconcile and the rest); say it in the team's words.
+- **No scavenger hunts.** Keep every label and number the sheets use, F12, D26, S3, §4, item 7. Never leave one bare. Each reference carries a few words of its own meaning where it sits, so the sentence works without a trip somewhere else: "D26 (no-term tenants get their own group)", "§17's no-guesswork rule", "F52's one guard in the caller". Same for a term the glossary defines once and a card uses 200 lines later. Grep-swept at close-out alongside the banned words: `F\d+`, `D\d+`, `S\d+`, `§\d+`, "item N", "see above". A label is a pointer for finding more, never the only carrier of the meaning, because nobody reads a sheet in the order it was written.
 
 ---
 
@@ -286,7 +287,7 @@ The sheets are one product. A reader who learned one must be able to read them a
 14. **Reading a prior doc once, early, is not reading it.** Prior documentation gets skimmed in Phase 0 for orientation, then never re-read — so whatever didn't seem relevant on first pass stays lost. Re-read the definitions doc *after* drafting, line by line, against the draft. *(A hardened formula doc specified a five-part card; the design drew four; the draft documented four. The missing part — what's still unpaid — was half the card's value, and it sat in a doc that had already been read.)*
 15. **Drafting from the design file inherits the design file's omissions.** If a section exists in the definitions but not in the mockup, working from the mockup silently drops it and nothing flags the gap. Walk the definitions doc's section list against the draft's section list, both directions, before closing out.
 
-16. **A card can be a duplicate of a screen that already exists.** A fully designed analytics card was about to be specced onto a screen before anyone checked whether the product already had that surface. It did, as a live screen with actions a read-only card can never offer, and the card's one useful next step was banned on a diagnosis screen anyway. *Check whether the product already owns the subject before specifying a card for it.* Where half a card feels wrong for the screen, usually the whole card is. The fix is one number that drills into the real screen.
+16. **A card can be a duplicate of a screen that already exists.** A fully designed analytics card was about to be specced onto a screen before anyone checked whether the product already had that surface. It did, as a live screen with actions a read-only card can never offer, and the card's one useful next step was banned on a diagnosis screen anyway. *Check whether the product already owns the subject before specifying a card for it.* Where half a card feels wrong for the screen, usually the whole card is. The fix is one number that drills into the real screen. **Second occurrence, one screen later:** a "settlements list to build" was recommended before checking whether the product owned settlement tracking. It did (the FlexiPe screen), and the owner caught it, not the check, because the check was never run for *drill destinations*, only for cards. The trap covers both: any time the spec is about to name a surface as new, whether a card on this screen or a destination on another.
 17. **Measuring a candidate number against production is necessary and not sufficient.** Querying live data correctly killed three specced numbers that described cases occurring zero, twenty-one and 0.35 percent of the time. The same query said 83% of expenses had no bill, and the number was cut as meaningless. That was wrong: nothing had ever shown anyone that figure, which was *why* it was 83%. **Current data measures behaviour under a product that never asked.** A new number's test is "would seeing this change what someone does", not "is this common today". Low counts can still be dead cases, but that has to be argued, not assumed from the count.
 18. **A filter option that is also a fixed card produces a duplicate nobody looks for.** Where a screen offers a period on its global filter *and* carries a card pinned to that same period, selecting it puts two identical numbers side by side. This is the known "tile becomes a duplicate of its neighbour" failure arriving through the filter rather than through a view toggle, so a toggle audit will not find it. Check every fixed-period card against every filter option. **Then check how the sibling screens ruled on it** — on one project two adjacent screens reached opposite answers, months apart, and neither knew.
 19. **A named destination is not a reachable one.** Three whole families of drill were specced onto a list that has no such filter, so the numbers could never open their own records. Enumerate the destination's real filters and match them against the drill list one by one. "The list supports filtering" is not the check; "the list supports *this* filter" is.
@@ -451,6 +452,50 @@ The sheets are one product. A reader who learned one must be able to read them a
 
 41. **Sweep every deliverable in the folder, not the main artifact alone.** The banned-word sweep ran on the handoff sheet and passed; the cover notes sitting beside it still carried a banned word, because they were written before the rule and never re-checked. The reader receives the folder, not the file. Glob the folder at close-out.
 
+42. **The confident wrong sentence describes the endpoint the screen *looks like* it should call, not the
+    one it does.** One sheet's audit found four substantive errors and every one had this exact shape: a
+    verification flow written up as recording nothing, when the screen calls a different path that does
+    record and displays the result on that very page; an activity list described as showing what was done
+    *to* a person when it shows what they *did*; a deletion said to clear sign-in sessions when it clears
+    push-notification registrations; and that same deletion said to leave a log entry against the deleted
+    person when the entry names whoever performed it. None came from careless reading. Each came from
+    tracing the plausible mechanism instead of the actual one, then writing with the confidence the trace
+    earned. **For any claim about what a screen records, sends or leaves behind, follow the call the screen
+    actually makes before writing the sentence** — and treat a dead or unreachable endpoint that matches
+    your expectation as the trap it is, because finding one feels like confirmation.
+
+43. **A corpus-wide punctuation sweep fragments any phrase that appears in more than one file, and the
+    fragmentation is invisible in the diff.** Stripping 732 em dashes across twenty documents was
+    content-safe by every mechanical check: zero words, numbers, links or identifiers changed. But one
+    quoted product label appearing in eight files came out the other side in five different wordings,
+    because different editors resolved the same dash to a comma, a colon, or a deletion. Each choice was
+    locally right; collectively they invented four new variants of a string the product will ship. **After
+    any sweep, grep every phrase that appears in more than one file and confirm it still has one form.**
+    The sweep also exposed a three-way split in that label which pre-dated it, so the check earns its keep
+    twice: it catches what the sweep broke and what it merely revealed.
+
+44. **An established population phrase can silently drift wider than the screen it describes, and nothing
+    catches it except checking the screen again.** An early sheet correctly ruled a not-yet-moved-in booking
+    out of a tenant list's non-goals section, in words. Four sheets later, the project's own measured-figures
+    convention had grown to "active tenants and bookings," and every session since had queried that broader
+    population without re-deriving it, because it read as an established, safe default. It was never
+    re-checked against the live screen. It took searching for a specific booking's name, with zero filters
+    applied, and getting no results, to notice the drift — a fact already sitting in a sibling sheet's own
+    non-goals table did not stop the phrase from spreading past it. The numeric damage was small (the
+    excluded population was about 1% of the combined one, never enough to flip a finding's direction), but
+    the phrase itself was flatly false: that population cannot appear on the screen, under any filter, full
+    stop. **A phrase that has become "how we always say it" is not exempt from verification — it is the
+    thing most likely to have drifted, because nobody re-checks what feels settled.** When a user gate asks
+    "are you satisfied," treat it as permission to re-open something that already shipped, not just a
+    prompt to restate confidence in it.
+
+31. **A rewrite can resurrect a fixed defect, not just drop a ruling.** The decision ledger exists for drops; on the Inventory uplift it also caught the rewrite reinstating behaviour (forward cards narrowing on the forward setting) that a v1 audit round had explicitly removed. The author writes the rewrite from their sense of the design, and their sense includes the pre-fix version. **Give the ledger agent the audit-round corrections as first-class rulings, not just the final text.**
+32. **`open(f,'w').write(fn_that_reads(f))` truncates the file before the function reads it.** Python evaluates the `open` first; the function reads back zero bytes, crashes, and leaves the file empty. This zeroed a closed sibling sheet mid-session. Write scripted edits as read-modify-write with the write LAST on its own line — and know where the backup is before running: the repo mirror restored the sheet in one copy.
+33. **A sibling's sheet can fix your open item for you.** An Inventory open item tracked a wrong toggle description on the Expense sheet; Expense's own uplift had already corrected it, and only the sibling check noticed. Before carrying an open item about another sheet forward, re-read that sheet — the suite moves between your sessions.
+
+46. **A rewrite can resurrect fixed defects, not only drop rulings.** The decision ledger exists because full rewrites drop things. On one uplift it caught the opposite: the rewriter reintroduced forward-card behaviour that a v1 audit round had explicitly removed, because the rewriter's memory of the card predated the fix. **The ledger must check both directions: v1 rulings present in v2, and v1's *corrections* not undone in v2.** Anything an audit round changed is exactly what a rewrite from memory will change back.
+47. **`open(f,'w').write(fn_that_reads(f))` truncates the file before the function reads it.** Python evaluates the `open` first. This zeroed a closed sibling sheet mid-session; it was restored from the repo clone within a minute. Two rules: never nest a same-file read inside a write call's arguments, and **the repo mirror is also the backup** — sync it at every close, not only at the end.
+
 ## Learnings (accumulating — split into a separate file if this passes ~30 entries)
 
 - **Prior art check is the highest-ROI pre-flight step.** One screen had three existing hardened documents; the job collapsed from "derive everything" to "reconcile and reformat."
@@ -485,7 +530,17 @@ The sheets are one product. A reader who learned one must be able to read them a
 
 - **A tiny filter group (two options) still earns the full pipeline, and finishes leaner because of it, not despite it.** Two options meant one combination row, one measured-figures table, no toggle audit, no drill matrix — the doc landed at a third of its siblings' length. The value didn't come from padding it to match; the live check, the production sum-check, and the creation-path trace still found a real, sitewide, ongoing defect that a code read alone had first mis-diagnosed as something else entirely (trap 39).
 
+- **Before concluding a destination is missing, run the filter-first ladder.** (a) Does an existing screen already own the subject (trap 16)? (b) Can a filter on an existing list express the slice? (c) Can the row carry the content the number promises (a discount drill must show discount amounts, and whether it can is a payload question, not a screen question)? Only if all three fail is a new surface worth proposing. On Collection this ladder resolved every candidate gap to filters and one existing screen; the "new screens needed" list came out empty.
+
+- **A "not built" claim must name which path is missing: recording, filtering, or display.** One sheet said caution-money adjustments had "no working path in the system today". The list-filter path was missing; the recording path was live, taking real payments within weeks of the sheet being written. The over-general claim was wrong the day it shipped and read as authoritative for two more days. Recording, filtering and display are three different paths that die and ship separately.
+
+- **Your own verification needs the same audit as an agent's.** One grounding round produced three measurement errors in a row — a case-sensitive grep that missed 31 capitalised hits, the wrong literal for a fixed phrase, a path that silently pointed at nothing — and each error read as "the source document is stale" when the source was right every time. The trap about verifying sub-agent findings runs both ways: when your checks contradict a grounded claim, audit the checks before the claim, starting with case, exact strings, and whether the file you measured exists.
+- **A suite rule needs its threshold stated, or the next screen re-litigates it.** "Every screen whose records carry future dates gets the forward setting" was true and still wrong for a screen holding 45 stray future rows out of 340,524. The test is whether records carry future dates *by design*, not whether any exist — and the rule only became usable once the carve-out was written into it.
 - **Reachability verdicts come from the filter surface the apps share, never from reading backend request handling alone.** The backend accepts more than any UI exposes, and a partial read of the backend misses codes the UI does expose; both errors happened on one screen, and a check against the app's own filter definitions flipped nine verdicts in both directions (eviction states, leaving-date windows and the already-expired agreement window all existed; a "confirmed" backend-only ✅ was fine). The app's filter file is the truth for "can a manager reach this"; the backend is the truth for "could it be built".
+
+- **An uplift is cheapest run by the session that wrote v1 — and that is also its risk.** The author holds every ruling, which made the ledger fast to verify; the author also holds the pre-fix drafts, which is exactly how the resurrected-defect trap fired. The guard is mechanical, not mental: draft from the published file on disk, never from recall, and run the ledger against the file even when you are sure.
+
+- **Audit restorations outweigh the word budget.** An uplift landed under the sibling ceiling, then the ledger and final read restored ~300 words of dropped rulings, putting it 3% over. The right call was to keep the rulings and correct the tracker's claim, not to trim other content to protect a number — a budget is an instrument for killing noise, and restored rulings are the opposite of noise. Say the overage plainly rather than silently re-trimming.
 
 ---
 
@@ -500,3 +555,12 @@ Stable facts for this project. Evolving state (decisions, screen status) lives i
 - **Informal source:** a developer-maintained spreadsheet with a tab per screen, keyed to design node URLs. Rough but useful.
 - **Cadence:** one screen per session. The tracker is the handoff artifact — a fresh session reads it and continues. Full handoff ceremony only for unusual sessions.
 - **Team:** backend, fullstack, mobile, QA, PM, CTO. Write for a smart, plain-vocabulary, largely non-native-English audience.
+
+48. **A banned-word sweep that names one inflection misses the others, and the miss is invisible because the sweep reports clean.** The close-out grep for time coinages listed `follows`; the Complaints draft carried `follow the filter` four times, all the banned sense, and every sweep passed. Caught only by reading the cards aloud. **Sweep the word family, not the word:** `follow(s|ed|ing)?`, `reconcil(e|es|ed|ing)`. A grep that names a stem and lets the regex carry the endings cannot be defeated by a tense change.
+
+49. **A rule inherited from recall of a sibling sheet can be the opposite of what the sheet says, and it reads as settled fact.** "Inventory's empty states carry no button" was recalled, stated as the suite rule, and used to argue against an Add Complaint button. Inventory's *healthy* states carry no button; its *not-set-up* state carries one, with the wording quoted in the sheet. Re-reading the source before citing it turned a claimed exception into no exception at all. **Before writing "the sibling rules X", read the sibling's own sentence for X, that session, not the memory of it.** Same shape as the frame-dismissal rule (a claim about a design file needs a live check): a claim about a sibling sheet needs a live read.
+
+50. **A whole-session-scale first report is the wrong shape for an owner who decides card by card, and the cost is a rejected turn.** The first consolidated Phase 0 to 3 report was rejected as overwhelming; the same content delivered one card and one question at a time closed eleven cards and every cross-cutting section in one sitting. The gate the owner set, "proceed only if 100% satisfied being user first", fired eleven times and caught a real gap on the majority of them (a filter behaviour never settled, a state trigger too wide, a tap that would lie, a rule recalled wrong). **When the owner asks for one thing at a time, that is the method, not a preference to be worked around; and a "sure?" gate is a request to re-open, never a prompt to restate confidence.**
+
+- **The greenfield screen with the least going in produced the most rulings and the most measured figures**, and needed the info-icon copy written where no sibling had. Complaints landed at 9,100 words against a 8,100 ceiling, over by the info-icon block that no other sheet carries. When a screen is the first to carry a layer, say the overage and keep the layer; do not trim rulings to protect a number set before the layer existed.
+- **The suite's own house voice for info icons was measurable and had already been decided.** 46 shipped hints, median seven words, zero you/your, four calc blocks, a locked glossary with banned synonyms. Writing the eleventh screen's icons meant measuring that voice first, not inventing one; the first draft (two to four sentences, second person, ending in advice) was wrong on all three counts and would have shipped a second dialect beside the first.
