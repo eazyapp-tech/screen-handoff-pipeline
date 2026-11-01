@@ -3,6 +3,10 @@ name: screen-handoff-pipeline
 description: Use when a design already exists (Figma frame, mockup, or built screen) and developers need a plain-language handoff doc defining every number, field, state, and behaviour on it — with zero code references. Trigger on "write a handoff for this screen", "turn this Figma into a spec", "define what each number means", "developer handoff sheet", "one-pager for this screen", or any multi-session project of documenting screens one at a time. NOT for features that don't exist yet (use feature-design-pipeline) or craft/visual overhauls of existing modules (use module-redesign-pipeline).
 ---
 
+> Before showing him anything, run the checklist in `~/agent-config/bars/handoff-sheet.md` and name that file in the Checked line.
+
+> Before anything else, read `lessons.md` beside this file: the corrections Sanchay has already given for this kind of work.
+
 # Screen Handoff Pipeline
 
 Turn an existing design into a handoff document a developer can build from and a non-technical reader can follow — plain language, no code references, every ambiguity closed before it ships.
@@ -137,7 +141,7 @@ Rules in prose are not a grid. One screen stated every time-filter rule correctl
 
 ## Phase 4 — Draft
 
-**Start from the project's canonical template, never from a blank page or from memory of the format** (RentOk analytics suite: `_meta/_Handoff Sheet Template.md` beside the tracker). Copy it, fill it, delete what the screen does not have. Drafting from memory is how spines drift; three screens drifted before this became a rule. Flag every ambiguity inline as an open question rather than guessing. A draft with ten honest open questions beats a confident draft with ten quiet assumptions.
+**Start from the project's canonical template, never from a blank page or from memory of the format.** Default since 12 October 2026: the locked structure below, copied from `~/rentok-property-onboarding/sheets/_template/` with the steps in `sheets/_Handoff Sheet Template.md` (RentOk analytics suite sheets keep their older template, `_meta/_Handoff Sheet Template.md` beside that tracker). Copy it, fill it, delete what the screen does not have. Drafting from memory is how spines drift; three screens drifted before this became a rule. Flag every ambiguity inline as an open question rather than guessing. A draft with ten honest open questions beats a confident draft with ten quiet assumptions.
 
 ## Phase 5 — Operator-first audit
 
@@ -207,12 +211,24 @@ First run of this, on the third screen of a project, found five disagreements. T
 - [ ] Append anything learned to the Learnings section of this skill.
 - [ ] **Write the cover note** for whoever receives the doc: which sections are theirs, which open decisions are pre-answered with a recommendation, where the superseded sources sit. A self-contained doc still needs a reading map — the alternative is the reader reading everything or nothing.
 - [ ] **Re-read the final artifact end to end after the last edit** (trap 11). Audit fixes are edits too; the final read comes after the final change, or the fixes ship their own contradictions.
+- [ ] **Run the writing gate first**: `python3 ~/agent-config/hooks/md_lint.py <the folder the reader receives>`. It decides itself and covers em dashes, banned words and bare references across every file in the folder, which is trap 41. Then run the sheet-specific sweep below, which it does not know about.
 - [ ] **Run the vocabulary sweep**: grep the sheet for the banned time words (follows, pinned, window-scoped, duration-scoped, period-scoped) and for any kind label outside Live / Time-scoped / Forecast. Mechanical, thirty seconds, and it is the only thing that has ever actually stopped this class of drift.
 - [ ] Confirm the doc has zero code references, zero jargon requiring your dictionary, and no open items left unmarked.
 
 ---
 
-## Document format
+## Document format (locked 12 October 2026, every new project)
+
+Sanchay locked this after the sheets kept coming back as "written so only an AI can consume it". Every part is backed by at least two outside sources (Square, Figma, Razorpay, GOV.UK, Spec Kit, KEP; research in `~/rentok-property-onboarding/research/handoff-doc-structure-2026-10/`). Readers are Indian developers, designers and QA, English as a second language, who scan rather than read.
+
+- **A sheet is a folder.** `README.md` for people, zero code (no file names, field names, stored values, frame ids). `evidence.md` for engineers and AI: how the design was read, frame ids, where the code proof is. `figma-notes.md`: an index to the notes. `images/`: dated previews only.
+- **README parts, in order:** header table (status, owner, approvers, built from, main screens, open work) · 1 Problem (plus "we know it worked when") · 2 In one minute (five bullets) · Key words · 3 Flow (Mermaid plus jobs table: opened from, she does, ends on, if she cancels or it fails) · 4 Screens (Figma link per screen, folded dated previews, no prose about screens) · 5 Rules (ID, rule, example, why, Given/When/Then check) · 6 Not in this release · 7 Watch out (trap, what we do) · 8 Open questions (ID, question, recommendation, owner) · 9 Work, ONE list (ID, item, type Design/Text/Build/Bug/Check, owner, done when) · 10 Before handoff (the ready-for-build checklist) · 11 Changed since you last read · folded Reference.
+- **States and element behaviour live as notes on the Figma frames**, not in the sheet (Razorpay, Figma Dev Mode). Note pattern: at most 4 lines, about 12 words a line, each starting On tap / Shows / If / Never / Blocks / Fix / Question / Suggest. No footer, no bold. Note type "Handoff draft" until the designers agree. Notes only, never layer edits. Measure after writing.
+- **Writing numbers, measured not guessed:** sentences average 15 words, max 20; paragraphs up to 5 sentences; cells about 12 words; "None" in empty cells; one sentence before each table.
+- **Before handoff:** two independent reviews, then a reader test with one developer and one QA, 10 minutes each.
+- Read only the design file's final page (in RentOk onboarding, the page "handoff"). A sheet citing draft frames is wrong even if every word is true.
+
+## Older format: RentOk analytics suite (kept for those sheets only)
 
 One document per screen. Sections in this order, skipping any that don't apply:
 
@@ -250,7 +266,7 @@ Number the sections end to end, and keep the design-only sections (empty-state c
 ---
 
 
-## Document grammar (locked 2026-08-07)
+## Document grammar, analytics suite (locked 2026-08-07)
 
 The sheets are one product. A reader who learned one must be able to read them all without relearning anything. This is a hard rule, the same rank as no-code-references:
 
@@ -495,6 +511,10 @@ The sheets are one product. A reader who learned one must be able to read them a
 
 46. **A rewrite can resurrect fixed defects, not only drop rulings.** The decision ledger exists because full rewrites drop things. On one uplift it caught the opposite: the rewriter reintroduced forward-card behaviour that a v1 audit round had explicitly removed, because the rewriter's memory of the card predated the fix. **The ledger must check both directions: v1 rulings present in v2, and v1's *corrections* not undone in v2.** Anything an audit round changed is exactly what a rewrite from memory will change back.
 47. **`open(f,'w').write(fn_that_reads(f))` truncates the file before the function reads it.** Python evaluates the `open` first. This zeroed a closed sibling sheet mid-session; it was restored from the repo clone within a minute. Two rules: never nest a same-file read inside a write call's arguments, and **the repo mirror is also the backup** — sync it at every close, not only at the end.
+
+48. **A document structure described in more than one place drifts, and the copy you did not update keeps teaching the old shape.** In the property onboarding repo the sheet layout lived in four places at once: the template, the inherited-rules page, this skill's format section and the quality bar. Locking a new structure in one of them would have left the other three producing the old sheets. When a structure changes, grep for every place that describes it, give it one home (the template), and make the others point there or change in the same commit. Same for the example sheet: when the template and the approved example disagree (ids first or not, a by-when column or not), reconcile them on purpose and write down which side won. *(12 October 2026.)*
+
+49. **A rebuild copied rule by rule drops the consequences of decisions.** Rebuilding property onboarding sheet 9 into the locked structure, the first draft kept every decision's headline and lost 14 of its conditions (a replacement booking blocking a move-out, people on a tenancy not counting as beds, missing rooms offered grouped with untick). Before writing, inventory the old sheet into a file (rulings, rules, briefs, fixes, today-facts, doors, states, words); after writing, have a reviewer mark every inventory row kept, moved, changed or dropped. And any job with a form needs a "What Save needs" table: without it, five places in one sheet answered differently. *(13 October 2026.)*
 
 ## Learnings (accumulating — split into a separate file if this passes ~30 entries)
 
